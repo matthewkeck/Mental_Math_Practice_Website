@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Math Practice</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mental Math Practice</h1>
+        <div class="problem" id="problem"></div>
+        <input type="text" class="input" onkeypress="checkAnswer(event)" id="answer" placeholder="Your answer">
+        <button class="button" onclick="checkAnswer()">Submit</button>
+        <div class="result" id="result"></div>
+        
+        <div class="settings">
+            <label for="operations">operations</label>
+            <select id="operations" multiple>
+                <option value="1">addition</option>
+                <option value="2">subtraction</option>
+                <option value="3">multiplication</option>
+                <option value="4">division</option>
+            </select>
+            <label for="charecters">charecters</label>
+            <select id="charecters" multiple>
+                <option value="1">0</option>
+                <option value="2">1</option>
+                <option value="3">2</option>
+                <option value="4">3</option>
+                <option value="5">4</option>
+                <option value="6">5</option>
+                <option value="7">6</option>
+                <option value="8">7</option>
+                <option value="9">8</option>
+                <option value="10">9</option>
+            </select>   
+            <label for="numDigits">Number of Digits:</label>
+            <input type="number" id="numDigits" min="1" max="10" value="2">
+            <span id="numDigitsDisplay">2</span>
+            <button onclick="setSelectedOptions()">Set Selections</button>
+        </div>
+        <div>
+            <label for="voiceSelect">Choose Voice:</label>
+            <select id="voiceSelect"></select>
+        </div>
+    </div>
+    <script src="scripts/scripts.js"></script>
+</body>
+</html>
