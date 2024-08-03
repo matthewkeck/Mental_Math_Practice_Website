@@ -15,6 +15,33 @@ let selectedOperations = ["*", "/", "-", "+"]
 let firstNumberDigits = 2
 let secondNumbersDigits = 2
 
+let elapsedTime = 0; // Time in seconds
+let lastTime = 0
+let timerInterval; 
+
+function startTimer() {
+    const timerElement = document.getElementById('timer');
+
+    timerInterval = setInterval(() => {
+        elapsedTime++;
+
+        const minutes = Math.floor(elapsedTime / 60);
+        const seconds = elapsedTime % 60;
+
+        timerElement.textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    const minutesElapsed = Math.floor(elapsedTime / 60);
+    const secondsElapsed = elapsedTime % 60;
+    elapsedTime = 0;
+    console.log(minutesElapsed, secondsElapsed)
+    return { minutesElapsed, secondsElapsed };
+}
+
 function setSelectedOptions() {
     
     const operationsElement = document.getElementById("operations");
@@ -30,13 +57,12 @@ function setSelectedOptions() {
     selectedCharecters2 = selectedCharecterOptions2 .map(option => option.text);
 
     firstNumberDigits = document.getElementById("secondNumbersDigits").value;
-    secondNumbersDigits= document.getElementById("firstNumbersDigits").value;
+    secondNumbersDigits = document.getElementById("firstNumbersDigits").value;
 
 }
 
 function generateProblem() {
     // document.getElementById('charecters').innerText
-
     num1 = "" 
     for (let i = 0; i < firstNumberDigits; i++) {
         num1 = num1 + selectedCharecters1[Math.floor(Math.random() * selectedCharecters1.length)]
@@ -66,22 +92,34 @@ function generateProblem() {
     }
     document.getElementById('problem').innerText = `${num1} ${operator} ${num2} = ?`;
     speakProblem(`${num1} ${operatorToPronuciation.get(operator)} ${num2}`);
+    startTimer();
 }
 
 function checkAnswer(event) {
-    let complements = ["you handsome man!", "I am so attracted to you write now!"]
     if (event && event.key !== 'Enter') {
         return;
     }    
+    const {minutesElapsed, secondsElapsed} = stopTimer();
     const userAnswer = parseFloat(document.getElementById('answer').value);
     if (userAnswer === correctAnswer) {
-        document.getElementById('result').innerText = 'Correct!';
-        // speakProblem('Correct!' + complements[Math.floor(Math.random() * complements.length)]);
-        speakProblem('Correct!');
+        document.getElementById('result').innerText = `Correct!`;
+        speakProblem(`Correct!`);
     } else {
-        document.getElementById('result').innerText = `Wrong! The correct answer is ${correctAnswer}`;
-        speakProblem(`Wrong! The correct answer is ${correctAnswer}`);
+        document.getElementById('result').innerText = `Wrong! The correct answer is ${correctAnswer}!`;
+        speakProblem(`Wrong! The correct answer is ${correctAnswer}!`);
     }
+    console.log(minutesElapsed)
+    console.log(secondsElapsed)
+    if (minutesElapsed === 0) {
+        speakProblem(`you took ${secondsElapsed} seconds to answer!`);
+    } 
+    else if (secondsElapsed === 0) {
+        speakProblem(`you took ${minutesElapsed} minutes to answer!`);
+    }
+    else {
+        speakProblem(`you took ${minutesElapsed} minutes and ${secondsElapsed} seconds to answer!`)
+    }
+
     document.getElementById('answer').value = '';
     generateProblem();
 }
@@ -105,7 +143,7 @@ function populateVoiceList() {
         const option = document.createElement('option');
         option.textContent = `${voice.name} (${voice.lang})`;
         option.value = index;
-        console.log(voice.name)
+        // console.log(voice.name)
         // Set Microsoft Ava Online (Natural) as the default selected voice
         if (voice.name === "Microsoft Ava Online (Natural) - English (United States)") {
             option.selected = true;
