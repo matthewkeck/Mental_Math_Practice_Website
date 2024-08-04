@@ -19,6 +19,36 @@ let elapsedTime = 0; // Time in seconds
 let lastTime = 0
 let timerInterval; 
 
+function prependInput(element) {
+    // Track the last value to detect backspace/delete action
+    let previousValue = element.getAttribute('data-previous-value') || '';
+    
+    // Capture the current input value
+    const currentValue = element.value;
+
+    // Check if the current value is shorter than the previous value (indicating a delete)
+    if (currentValue.length < previousValue.length) {
+        // A delete occurred, handle it by removing the last character
+        element.value = previousValue.slice(1);
+    } else {
+        // No delete occurred, get the new character typed
+        const newChar = currentValue.slice(-1);
+
+        // Check if the new character is a digit
+        if (!/\d/.test(newChar)) {
+            // If not, remove it from the input value
+            element.value = currentValue.slice(0, -1);
+        } else {
+            // Prepend the new character to the previous value
+            element.value = newChar + previousValue;
+        }
+    }
+
+    // Store the new value as the previous value for the next input event
+    element.setAttribute('data-previous-value', element.value);
+}
+
+
 function startTimer() {
     const timerElement = document.getElementById('timer');
 

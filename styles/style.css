@@ -33,6 +33,8 @@ h1 {
 }
 
 .input {
+    direction: rtl;
+    text-align: right;
     width: calc(100% - 22px);
     padding: 10px;
     margin-bottom: 20px;
