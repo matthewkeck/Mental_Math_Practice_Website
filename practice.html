@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Practice</h1>
+        <div id="timer">00:00</div>
+        <!-- <div class="problem" id="problem"></div> -->
+        <div class="problem-container">
+            <div class="problem" id="firstNumber"></div>
+            <div class="problem" id="operation"></div>
+            <div class="problem" id="secondNumber"></div>
+        </div>
+        <input type="text" class="input" id="answer" oninput="prependInput(this)" onkeypress="checkAnswer(event)"  placeholder="Your answer">
+        <button class="button" onclick="checkAnswer()">Submit</button>
+         <!-- Two columns to track time taken for correct and wrong answers -->
+        <div class="results-container">
+            <div class="result-column">
+                <h3>Correct Answers</h3>
+                <ul id="correctTimes"></ul> <!-- List to display correct answer times -->
+            </div>
+            <div class="result-column">
+                <h3>Wrong Answers</h3>
+                <ul id="wrongTimes"></ul> <!-- List to display wrong answer times -->
+            </div>
+        </div>
+        
+    </div> 
+    <script src="scripts/scripts.js"></script>
+</body>
+</html>

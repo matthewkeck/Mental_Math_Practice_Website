@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/menu.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <button id="test" onclick="submitSelections()">TEST</button>
+        <div class="settings">
+                <label for="operations">operations</label>
+                <select id="operations" multiple>
+                    <option value="1">+</option>
+                    <option value="2">-</option>
+                    <option value="3">*</option>
+                    <option value="4">/</option>
+                </select>
+
+                <label for="firstNumbersDigits">Number of Digits for the first number:</label>
+                <input type="number" id="firstNumbersDigits" min="1" max="8" value="4">
+                <span id="firstNumbersDigitsDisplay"></span>
+
+
+                <label for="firstNumberCharecters">first numbers charecters</label>
+                <select id="firstNumberCharecters" multiple>
+                    <option value="1">0</option>
+                    <option value="2">1</option>
+                    <option value="3">2</option>
+                    <option value="4">3</option>
+                    <option value="5">4</option>
+                    <option value="6">5</option>
+                    <option value="7">6</option>
+                    <option value="8">7</option>
+                    <option value="9">8</option>
+                    <option value="10">9</option>
+                </select>   
+                
+                <label for="secondNumbersDigits">Number of Digits for the second number:</label>
+                <input type="number" id="secondNumbersDigits" min="1" max="8" value="1">
+                <span id="firstNumbersDigitsDisplay"></span>
+                
+                <label for="secondNumberCharecters">second numbers charecters</label>
+                <select id="secondNumberCharecters" multiple>
+                    <option value="1">0</option>
+                    <option value="2">1</option>
+                    <option value="3">2</option>
+                    <option value="4">3</option>
+                    <option value="5">4</option>
+                    <option value="6">5</option>
+                    <option value="7">6</option>
+                    <option value="8">7</option>
+                    <option value="9">8</option>
+                    <option value="10">9</option>
+                </select>
+
+            </div>
+            <div>
+                <label for="voiceSelect">Choose Voice:</label>
+                <select id="voiceSelect" value = "Microsoft Ava Online (Natural) - English (United States) (en-US)"></select>
+            </div>
+    </div>
+    <script>
+        let voices = [];
+        let selectedVoiceName = "Microsoft Ava Online (Natural) - English (United States)";
+
+        function submitSelections() {
+            const operationsElement = document.getElementById("operations");
+            const selectedOperationOptions = Array.from(operationsElement.selectedOptions);
+            let selectedOperations = selectedOperationOptions.map(option => option.text);
+
+            const charectersElement1 = document.getElementById("firstNumberCharecters");
+            const selectedCharecterOptions1 = Array.from(charectersElement1.selectedOptions);
+            let selectedCharecters1 = selectedCharecterOptions1.map(option => option.text);
+
+            const charectersElement2 = document.getElementById("secondNumberCharecters");
+            const selectedCharecterOptions2 = Array.from(charectersElement2.selectedOptions);
+            let selectedCharecters2 = selectedCharecterOptions2.map(option => option.text);
+
+            let firstNumberDigits = document.getElementById("firstNumbersDigits").value;
+            let secondNumbersDigits = document.getElementById("secondNumbersDigits").value;
+            
+            window.location.href = `practice.html?operation=${selectedOperations}&charecters1=${selectedCharecters1}&charecters2=${selectedCharecters2}&numDigits1=${firstNumberDigits}&numDigits2=${secondNumbersDigits}&selectedVoice=${encodeURIComponent(selectedVoiceName)}`;
+        }
+
+        function populateVoiceList() {
+            voices = speechSynthesis.getVoices();
+            const voiceSelect = document.getElementById('voiceSelect');
+            voiceSelect.innerHTML = '';
+
+            voices.forEach((voice) => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.value = voice.name; // Set the value to the voice name
+
+                // Set Microsoft Ava Online (Natural) as the default selected voice
+                if (voice.name === "Microsoft Ava Online (Natural) - English (United States)") {
+                    option.selected = true;
+                    selectedVoiceName = voice.name; // Set the selectedVoiceName to the default selected voice name
+                }
+
+                voiceSelect.appendChild(option);
+            });
+
+            // Update selectedVoiceName when the user changes the voice
+            voiceSelect.onchange = () => {
+                selectedVoiceName = voiceSelect.value;
+            };
+        }
+
+        window.speechSynthesis.onvoiceschanged = populateVoiceList;
+
+    </script>
+</body>
+</html>
